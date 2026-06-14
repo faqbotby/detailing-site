@@ -15,14 +15,32 @@
         .nav-link { color: #ffffff !important; transition: 0.3s; }
         .nav-link:hover { color: #ff3333 !important; }
         /* ВСТАВЛЯЙ СЮДА: Магия только для мобильных телефонов */
-@media (max-width: 768px) {
-    .navbar {
-        position: absolute !important; /* На мобилке шапка больше не преследует, а остается вверху */
-        top: 0;
-        left: 0;
-        width: 100%;
-    }
-}
+/* СТИЛИ СТРОГО ДЛЯ МОБИЛЬНОЙ ВЕРСИИ (на ПК всё остается стандартным) */
+        @media (max-width: 991px) {
+            .navbar {
+                position: absolute !important; /* Шапка больше не преследует на мобилке, а остается вверху */
+                top: 0;
+                left: 0;
+                width: 100%;
+                background-color: #121212 !important; /* Плотный черный фон, чтобы ссылки читались */
+                padding: 15px 20px;
+            }
+            .navbar-collapse {
+                background-color: #121212;
+                padding-bottom: 10px;
+            }
+            .nav-link {
+                padding: 10px 0 !important;
+                border-bottom: 1px solid #1c1c1c; /* Элегантные разделители между ссылками */
+            }
+            .nav-link:last-child {
+                border-bottom: none;
+            }
+            /* Убираем синий контур при нажатии на мобильную кнопку */
+            .navbar-toggler:focus {
+                box-shadow: none;
+            }
+        }
 
         /* Главный баннер */
         .hero-section {
@@ -167,16 +185,25 @@
 </head>
 <body>
 
-    <!-- НАВИГАЦИЯ (МЕНЮ) -->
+    <!-- НАВИГАЦИЯ С АДАПТИВНОЙ КНОПКОЙ-ГАМБУРГЕРОМ -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
         <div class="container">
             <a class="navbar-brand" href="#">CARVERIS <span>DETAILING</span></a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="#about">O nas</a>
-                <a class="nav-link" href="#services">Usługi</a>
-                <a class="nav-link" href="#contact">Kontakt</a>
-                <a class="nav-link" href="#socials">Social Media</a>
-                <a class="nav-link" href="#racing-game-section">CARVERIS RUSH</a>
+
+            <!-- Кнопка с 3 полосками (появляется ТОЛЬКО на мобилках) -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Контейнер меню: на ПК раскрыт, на мобилках прячется под кнопку -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto text-center text-lg-end pt-2 pt-lg-0">
+                    <a class="nav-link" href="#about">O nas</a>
+                    <a class="nav-link" href="#services">Usługi</a>
+                    <a class="nav-link" href="#contact">Kontakt</a>
+                    <a class="nav-link" href="#socials">Social Media</a>
+                    <a class="nav-link text-danger fw-bold" href="#racing-game-section">CARVERIS RUSH</a>
+                </div>
             </div>
         </div>
     </nav>
