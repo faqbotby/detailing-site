@@ -73,7 +73,14 @@ def join():
     phone = request.form.get('phone')
     car = request.form.get('car')
     service = request.form.get('service')
-    send_telegram_notification(name, phone, car, service)
+
+    # Запускаем отправку сообщения в фоновом потоке, чтобы сайт не зависал
+    threading.Thread(
+        target=send_telegram_notification,
+        args=(name, phone, car, service),
+        daemon=True
+    ).start()
+
     return redirect(url_for('thanks'))
 
 

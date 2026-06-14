@@ -14,6 +14,15 @@
         .navbar-brand span { color: #ff3333; }
         .nav-link { color: #ffffff !important; transition: 0.3s; }
         .nav-link:hover { color: #ff3333 !important; }
+        /* ВСТАВЛЯЙ СЮДА: Магия только для мобильных телефонов */
+@media (max-width: 768px) {
+    .navbar {
+        position: absolute !important; /* На мобилке шапка больше не преследует, а остается вверху */
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}
 
         /* Главный баннер */
         .hero-section {
@@ -626,14 +635,17 @@ function endRaceGame(isWin) {
     document.getElementById('start-race-btn').innerText = "ZAGRAJ PONOWNIE 🔄";
 
     if (isWin) {
-        msgContainer.style.backgroundColor = 'rgba(255, 51, 51, 0.15)';
-        msgContainer.style.border = '2px solid #ff3333';
-        msgContainer.innerHTML = `
+    msgContainer.style.backgroundColor = 'rgba(255, 51, 51, 0.15)';
+    msgContainer.style.border = '2px solid #ff3333';
+    msgContainer.innerHTML = `
+        <!-- ДОБАВИЛИ ЭТУ СТРОЧКУ ДЛЯ СТИЛИЗАЦИИ -->
+        <div class="game-win-box">
             <h3 class="text-danger fw-black text-uppercase mb-3" style="font-size: 1.6rem; letter-spacing: 1px;">MISTRZ KIEROWNICY! 🏆</h3>
             <p class="text-white fw-bold mb-3" style="font-size: 1.1rem;">Niesamowity wytrwałość! Pokonałeś cały dystans. Twój kod rabatowy 5%:</p>
-            <div class="bg-black p-3 rounded fw-black fs-3 border border-danger text-white mb-2" style="letter-spacing: 3px; color: #ff3333 !important;">CARVERIS_PRO_RIDER</div>
-            <small class="text-white-50 fw-bold d-block mt-2" style="font-size: 0.85rem;">Pokaż ten kod przy rezerwacji terminu w naszym studio!</small>
-        `;
+            <div class="bg-black p-3 rounded fw-black fs-3 border border-danger text-white mb-2" style="letter-spacing: 3px; color: #ff3333 !important; word-wrap: break-word;">CARVERIS_PRO_RIDER</div>
+            <small class="text-white-50 fw-bold d-block mt-2" style="font-size: 0.85rem;">Pokaż ten kod przy rezerwacji terminu w unserem studio!</small>
+        </div>
+    `;
     } else {
         msgContainer.style.backgroundColor = 'rgba(255,255,255,0.05)';
         msgContainer.style.border = '2px solid #444';
