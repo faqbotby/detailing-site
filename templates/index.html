@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Detailing Studio</title>
+    <!-- Подключаем Bootstrap для крутого дизайна -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #0b0b0b; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+
+        /* Шапка сайта */
+        .navbar { background-color: rgba(18, 18, 18, 0.95) !important; backdrop-filter: blur(5px); }
+        .navbar-brand span { color: #ff3333; }
+        .nav-link { color: #ffffff !important; transition: 0.3s; }
+        .nav-link:hover { color: #ff3333 !important; }
+
+        /* Главный баннер */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?q=80&w=1200') center/cover no-repeat;
+            padding: 120px 0;
+            text-align: center;
+        }
+
+        /* Карточки услуг */
+        .card-custom {
+            background-color: #161616;
+            border: 1px solid #222;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+        .card-custom:hover {
+            border-color: #ff3333;
+            transform: translateY(-5px);
+        }
+        .card-img-top { height: 200px; object-fit: cover; }
+
+        /* Форма заказа */
+        .form-section { background-color: #111111; padding: 60px 0; border-top: 2px solid #ff3333; }
+        .form-control, .form-select { background-color: #222; color: #fff; border: 1px solid #444; }
+        .form-control:focus, .form-select:focus { background-color: #2b2b2b; color: #fff; border-color: #ff3333; box-shadow: none; }
+        .form-label {
+    color: #dddddd !important; /* Мягкий белый, не режет глаза */
+    font-weight: 500; /* Стандартная приятная плотность */
+    font-size: 0.95rem;
+}
+        /* Стили для галереи работ */
+.gallery-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    cursor: pointer;
+}
+.gallery-item {
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.gallery-item:hover .gallery-img {
+    transform: scale(1.08);
+    filter: brightness(0.8);
+}
+/* Эффект появления текста при наведении */
+.gallery-text {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    pointer-events: none;
+}
+.gallery-item:hover .gallery-text {
+    opacity: 1;
+}
+/* Задний фон-затемнение вокруг окна */
+.custom-modal {
+    display: none; /* По умолчанию скрыто */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Глубокое затемнение */
+    z-index: 9999; /* Поверх всего */
+    backdrop-filter: blur(5px); /* Размытие заднего плана */
+}
+
+/* Окно формы и неоновая подсветка */
+.custom-modal-content {
+    background-color: #121212; /* Темный фон */
+    border: 2px solid #ff3333; /* Красная рамка */
+    border-radius: 20px;
+    margin: 3% auto;
+    padding: 35px 30px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 0 35px rgba(255, 51, 51, 0.4); /* Неоновое свечение */
+    position: relative;
+    animation: popUpCustom 0.3s ease-out;
+}
+
+/* Кнопка закрытия (крестик) */
+.custom-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.custom-close-btn:hover {
+    color: #ff3333;
+}
+
+/* Анимация появления из центра */
+@keyframes popUpCustom {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+::placeholder { color: #999999 !important; opacity: 1; }
+/* Идеальное совпадение рамки и карты */
+.map-container {
+    border: 1px solid #2d2d2d;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #161616;
+    height: 400px; /* Фиксируем высоту контейнера */
+    position: relative;
+}
+
+/* Карта заполняет 100% высоты контейнера */
+.map-container iframe {
+    filter: invert(90%) hue-rotate(180deg) grayscale(30%) brightness(90%);
+    display: block;
+    width: 100%;
+    height: 100% !important; /* Намертво привязываем высоту к контейнеру */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#socials .row a div:hover {
+    border-color: #ff3333 !important;
+    transform: translateY(-4px) translateZ(0); /* Добавили translateZ сюда */
+    box-shadow: 0 5px 15px rgba(255, 51, 51, 0.1) !important;
+    -webkit-font-smoothing: antialiased;
+}
+    </style>
+</head>
+<body>
+
+    <!-- НАВИГАЦИЯ (МЕНЮ) -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand" href="#">CARVERIS <span>DETAILING</span></a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#about">O nas</a>
+                <a class="nav-link" href="#services">Usługi</a>
+                <a class="nav-link" href="#contact">Kontakt</a>
+                <a class="nav-link" href="#socials">Social Media</a>
+                <a class="nav-link" href="#racing-game-section">CARVERIS RUSH</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <header class="hero-section">
+        <div class="container mt-5">
+            <h1 class="display-3 fw-bold text-uppercase">Zabezpiecz Swój Samochód</h1>
+            <p class="lead mb-4" style="color: #cccccc; font-size: 1.15rem; font-weight: 400;">
+    Profesjonalne usługi detailingowe w Twoim mieście. Nadaj autu salonowy blask.</p>
+            <a href="javascript:void(0)" onclick="openBooking()" class="btn btn-danger btn-lg px-4 me-2">Zarezerwuj termin</a>
+            <a href="#services" class="btn btn-outline-light btn-lg px-4">Zobacz usługi</a>
+        </div>
+    </header>
+
+<!-- БЛОК О НАС (с мягкой яркостью текста) -->
+<section id="about" class="container py-5 text-center">
+    <h2 class="mb-4 text-uppercase">Dlaczego My?</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <h4 class="text-white">Doświadczenie</h4>
+            <!-- Изменили цвет на #aaaaaa для снижения яркости -->
+            <p style="color: #aaaaaa; font-size: 0.95rem;">Ponad 5 lat pracy z samochodami klasy premium i powłokami ochronnymi.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <h4 class="text-white">Certyfikowane materiały</h4>
+            <p style="color: #aaaaaa; font-size: 0.95rem;">Używamy tylko sprawdzonych chemii i powłok ceramicznych z Japonii i USA.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <h4 class="text-white">Gwarancja jakości</h4>
+            <p style="color: #aaaaaa; font-size: 0.95rem;">Dajemy pisemną gwarancję na nałożone powłoki ceramiczne i kwarcowe.</p>
+        </div>
+    </div>
+</section>
+
+    <!-- БЛОК УСЛУГ С ФОТО ПРИМЕРАМИ -->
+    <section id="services" class="container py-5">
+        <h2 class="text-center mb-5 text-uppercase">Nasze Usługi</h2>
+        <div class="row g-4">
+
+            <!-- Услуга 1 -->
+            <div class="col-md-4">
+                <div class="card card-custom h-100 text-white">
+                    <img src="https://glowackidetailing.pl/wp-content/uploads/2023/05/Korekta-lakieru-1.png" class="card-img-top" alt="Korekta lakieru">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Korekta Lakieru</h5>
+                        <p class="card-text flex-grow-1" style="color: #bbbbbb; font-size: 0.95rem; font-weight: 400;">
+    Usuwanie do 95% zarysowań, przywrócenie głębi koloru i lustrzanego odbicia.
+</p>
+                        <button class="btn btn-sm btn-outline-danger w-100 mt-3" onclick="openBooking('Korekta lakieru')">Wybierz ofertę</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Услуга 2 -->
+            <div class="col-md-4">
+                <div class="card card-custom h-100 text-white">
+                    <img src="https://www.moje-auto.pl/blog/wp-content/uploads/2021/02/powloka-ceramiczna-co-warto-o-niej-wiedziec-i-jak-o-nia-dbac.jpg" class="card-img-top" alt="Powłoka ceramiczna">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Powłoka Ceramiczna</h5>
+                        <p class="card-text flex-grow-1" style="color: #cccccc; font-size: 0.95rem;">
+    Długotrwała ochrona przed chemią, ptasimi odchodami, UV oraz niesamowity efekt hydrofobowy.</p>
+                        <button class="btn btn-sm btn-outline-danger w-100 mt-3" onclick="openBooking('Powłoka ceramiczna')">Wybierz ofertę</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Услуга 3 -->
+            <div class="col-md-4">
+                <div class="card card-custom h-100 text-white">
+                    <img src="https://topmax.com.pl/wp-content/uploads/2020/07/Top-Max-ma%C5%82e-25-of-119-1536x1025.jpg" class="card-img-top" alt="Czyszczenie wnętrza">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Detailing Wnętrza</h5>
+                        <p class="card-text flex-grow-1" style="color: #cccccc; font-size: 0.95rem;">
+    Demontaż foteli, pranie ekstrakcyjne, czyszczenie i impregnacja skór dedykowanymi kosmetykami.</p>
+                        <button class="btn btn-sm btn-outline-danger w-100 mt-3" onclick="openBooking('Detailing wnętrza')">Wybierz ofertę</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section id="contact" style="background-color: #111111; padding: 60px 0; border-top: 2px solid #ff3333;">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+
+                <div class="col-md-5">
+                    <h2 class="text-uppercase mb-4">Kontakt i Adres</h2>
+
+                    <div class="mb-4">
+                        <h5 class="text-white fw-bold mb-1">CARVERIS Detailing Studio</h5>
+                        <p style="color: #aaaaaa; font-size: 1rem;">ul. Chartowo 29,<br> 61-245 Poznań</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="text-white fw-bold mb-1">Telefon / Zapytania</h5>
+                        <p class="mb-0"><a href="tel:+48452867247" style="color: #ff3333; text-decoration: none; font-size: 1.1rem; font-weight: bold;">+48 452 867 247</a></p>
+                        <small style="color: #888888;">Zadzwoń lub napisz, umówimy termin</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="text-white fw-bold mb-1">Godziny otwarcia</h5>
+                        <p style="color: #aaaaaa; font-size: 0.95rem;" class="mb-0">Poniedziałek - Piątek: 8:00 - 18:00</p>
+                        <p style="color: #aaaaaa; font-size: 0.95rem;">Sobota: 9:00 - 14:00</p>
+                    </div>
+
+                    <button class="btn btn-outline-danger mt-2 px-4" onclick="openBooking()">Zarezerwuj wizytę</button>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="map-container shadow">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2434.946152142862!2d16.978271776388862!3d52.3895264720273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47045b0051ee522f%3A0x56533b0ff322b008!2sChartowo%20Tower!5e0!3m2!1spl!2spl!4v1779906209569!5m2!1spl!2spl" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+<section id="socials" class="container py-5 text-center">
+    <h2 class="text-uppercase mb-2">Obserwuj Nas</h2>
+    <p class="mb-5" style="color: #cccccc; font-size: 1rem;">
+        Bądź na bieżąco! Zobacz nasze najnowsze projekty, procesy pracy i codzienne relacje na żywo.
+    </p>
+
+    <div class="row justify-content-center g-4">
+        <!-- Instagram -->
+        <div class="col-md-3 col-sm-6">
+            <a href="https://www.instagram.com/carveris.pl" target="_blank" class="text-decoration-none" style="outline: none !important;">
+                <div class="p-4 rounded-4 shadow" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important; transition: transform 0.3s ease; will-change: transform; border: none !important; outline: none !important;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <!-- pointer-events: none убирает отдельный фокус мыши со смайлика -->
+                    <div class="display-4 mb-2" style="line-height: 1; pointer-events: none !important; user-select: none; border: none !important; outline: none !important;">📸</div>
+                    <h4 class="text-white fw-bold mb-1" style="pointer-events: none !important;">Instagram</h4>
+                    <p class="mb-0 text-white-50" style="font-size: 0.9rem; pointer-events: none !important;">@your_studio_instagram</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- TikTok -->
+        <div class="col-md-3 col-sm-6">
+            <a href="https://www.tiktok.com/@carveris_pl" target="_blank" class="text-decoration-none" style="outline: none !important;">
+                <div class="p-4 rounded-4 shadow" style="background: linear-gradient(135deg, #121212 0%, #00f2fe 40%, #fe0979 80%, #121212 100%) !important; background-size: 100% 100%; transition: transform 0.3s ease; will-change: transform; border: none !important; outline: none !important;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <!-- pointer-events: none убирает отдельный фокус мыши со смайлика -->
+                    <div class="display-4 mb-2" style="line-height: 1; pointer-events: none !important; user-select: none; border: none !important; outline: none !important;">🎵</div>
+                    <h4 class="text-white fw-bold mb-1" style="pointer-events: none !important;">TikTok</h4>
+                    <p class="mb-0 text-white-50" style="font-size: 0.9rem; pointer-events: none !important;">@your_studio_tiktok</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Facebook -->
+        <div class="col-md-3 col-sm-6">
+            <a href="https://www.facebook.com/ТВОЙ_ПРОФИЛЬ" target="_blank" class="text-decoration-none" style="outline: none !important;">
+                <div class="p-4 rounded-4 shadow" style="background: linear-gradient(135deg, #0062e3 0%, #0047ab 100%) !important; transition: transform 0.3s ease; will-change: transform; border: none !important; outline: none !important;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <!-- pointer-events: none убирает отдельный фокус мыши со смайлика -->
+                    <div class="display-4 mb-2" style="line-height: 1; pointer-events: none !important; user-select: none; border: none !important; outline: none !important;">👥</div>
+                    <h4 class="text-white fw-bold mb-1" style="pointer-events: none !important;">Facebook</h4>
+                    <p class="mb-0 text-white-50" style="font-size: 0.9rem; pointer-events: none !important;">Carveris Detailing</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- MINI-GRA "WYŚCIGI CARVERIS PRO" -->
+<section id="racing-game-section" class="container py-5 text-center" style="background-color: #080808; border: 1px solid #1c1c1c; border-radius: 16px; margin-top: 40px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <h2 class="text-uppercase mb-3 fw-black text-white" style="letter-spacing: 2px; font-size: 2rem;">🏁 CARVERIS RUSH: PRO EDITION 🏁</h2>
+    <p class="text-white fw-bold mb-4" style="font-size: 1.1rem; color: #ffffff !important;">
+        Omijaj superszybkie auta za pomocą <span class="text-danger fw-extrabold">MYSZKI, PALCA </span>. <br>Prędkość rośnie z każdym punktem! Zdobądź <span class="text-danger fw-extrabold">30 punktów</span> po rabat 5%.
+    </p>
+
+    <!-- Kontener gry -->
+<div class="position-relative mx-auto rounded-3" id="gameWrapper" style="max-width: 340px; background-color: #0f0f0f; border: 4px solid #333; padding: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); touch-action: none; user-select: none;">
+
+    <div id="race-intro" class="position-absolute d-flex flex-column align-items-center justify-content-center rounded-3"
+         style="top: 10px; left: 10px; right: 10px; bottom: 10px;
+                background: linear-gradient(rgba(10,10,10,0.65), rgba(10,10,10,0.9)), url('/static/images/race-bg.jpg.png') center/cover no-repeat;
+                backdrop-filter: blur(2px); z-index: 20;">
+
+        <p class="text-white fw-black mb-1 fs-4" style="letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">CARVERIS RUSH</p>
+        <p class="text-white fw-bold mb-2 small" style="letter-spacing: 1px; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">STEROWANIE TRUDNE:</p>
+        <p class="text-white-50 small mb-4 px-3" style="font-size: 0.8rem; text-shadow: 0 1px 2px rgba(0,0,0,0.9);">MYSZKA / PALEC </p>
+
+        <button id="start-race-btn" class="btn btn-danger btn-lg fw-black text-uppercase px-5 py-3 rounded-pill shadow-lg" style="font-size: 1.1rem; letter-spacing: 1px; border: 2px solid #ffffff30;">URUCHOM SILNIK 🏎️</button>
+    </div>
+
+    <canvas id="raceCanvas" width="300" height="420" class="d-block mx-auto" style="background-color: #111111; border-radius: 6px; border: 1px solid #222;"></canvas>
+</div>
+    <!-- Ekran wyniku -->
+    <div id="race-result" class="mt-4 d-none">
+        <div id="race-msg" class="p-4 rounded-4 d-inline-block shadow-lg" style="max-width: 480px; width: 100%;"></div>
+    </div>
+</section>
+
+<!-- LOGIKA PRO WYŚCIGÓW -->
+<script>
+const canvas = document.getElementById("raceCanvas");
+const ctx = canvas.getContext("2d");
+
+const carWidth = 38;
+const carHeight = 68;
+
+let player = { x: 131, y: 330, speed: 8 };
+let obstacles = [];
+let score = 0;
+let isRacePlaying = false;
+let gameAnimationId;
+let spawnTimer = 0;
+let keys = { Left: false, Right: false };
+
+let baseObstacleSpeed = 4.5; // Чуть снизили стартовую скорость для долгого разгона
+let spawnFrequency = 55;
+
+document.getElementById('start-race-btn').addEventListener('click', () => {
+    document.getElementById('race-intro').classList.add('d-none');
+    document.getElementById('race-result').classList.add('d-none');
+    resetRaceGame();
+    isRacePlaying = true;
+    animateRace();
+});
+
+// Управление кнопками
+document.addEventListener('keydown', (e) => {
+    if (!isRacePlaying) return;
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.Left = true;
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.Right = true;
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(e.key)) e.preventDefault();
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.Left = false;
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.Right = false;
+});
+
+// Управление мышью
+canvas.addEventListener('mousemove', (e) => {
+    if (!isRacePlaying) return;
+    const rect = canvas.getBoundingClientRect();
+    player.x = (e.clientX - rect.left) - carWidth / 2;
+    keepCarInBounds();
+});
+
+// Управление тачем
+canvas.addEventListener('touchmove', (e) => {
+    if (!isRacePlaying) return;
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    player.x = (e.touches[0].clientX - rect.left) - carWidth / 2;
+    keepCarInBounds();
+}, { passive: false });
+
+function keepCarInBounds() {
+    if (player.x < 12) player.x = 12;
+    if (player.x > canvas.width - carWidth - 12) player.x = canvas.width - carWidth - 12;
+}
+
+function resetRaceGame() {
+    player.x = 131;
+    obstacles = [];
+    score = 0;
+    spawnTimer = 0;
+    baseObstacleSpeed = 4.5;
+    spawnFrequency = 55;
+    keys.Left = false;
+    keys.Right = false;
+}
+
+function spawnObstacle() {
+    const lanes = [16, 86, 156, 226];
+    const randomLane = lanes[Math.floor(Math.random() * lanes.length)];
+
+    if (obstacles.length > 0 && obstacles[obstacles.length - 1].y < 90 && obstacles[obstacles.length - 1].x === randomLane) {
+        return;
+    }
+
+    const colors = ["#222222", "#0056b3", "#d97706", "#4b5563"];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+    obstacles.push({
+        x: randomLane,
+        y: -carHeight,
+        width: carWidth,
+        height: carHeight,
+        color: randomColor,
+        speed: baseObstacleSpeed + (Math.random() * 1.2)
+    });
+}
+
+function drawStylizedCar(x, y, mainColor, isPlayer) {
+    ctx.save();
+
+    // Колеса
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(x - 2, y + 8, 4, 12);
+    ctx.fillRect(x + carWidth - 2, y + 8, 4, 12);
+    ctx.fillRect(x - 2, y + carHeight - 20, 4, 12);
+    ctx.fillRect(x + carWidth - 2, y + carHeight - 20, 4, 12);
+
+    // Основной кузов
+    ctx.fillStyle = mainColor;
+    if (isPlayer) {
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "#ff3333";
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(x + 6, y);
+    ctx.lineTo(x + carWidth - 6, y);
+    ctx.quadraticCurveTo(x + carWidth, y, x + carWidth, y + 10);
+    ctx.lineTo(x + carWidth, y + carHeight - 8);
+    ctx.quadraticCurveTo(x + carWidth, y + carHeight, x + carWidth - 6, y + carHeight);
+    ctx.lineTo(x + 6, y + carHeight);
+    ctx.quadraticCurveTo(x, y + carHeight, x, y + carHeight - 8);
+    ctx.lineTo(x, y + 10);
+    ctx.quadraticCurveTo(x, y, x + 6, y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Кабина / Стеkla
+    ctx.fillStyle = "#0a0a0a";
+    ctx.fillRect(x + 5, y + 20, carWidth - 10, 10);
+    ctx.fillRect(x + 6, y + 46, carWidth - 12, 8);
+    ctx.fillRect(x + 2, y + 26, 3, 22);
+    ctx.fillRect(x + carWidth - 5, y + 26, 3, 22);
+
+    // Крыша
+    ctx.fillStyle = mainColor;
+    ctx.fillRect(x + 7, y + 28, carWidth - 14, 18);
+
+    // Фары
+    if (isPlayer) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(x + 4, y, 5, 3);
+        ctx.fillRect(x + carWidth - 9, y, 5, 3);
+
+        ctx.fillStyle = "#00f2fe";
+        ctx.fillRect(x + 3, y + 3, 7, 2);
+        ctx.fillRect(x + carWidth - 10, y + 3, 7, 2);
+    } else {
+        ctx.fillStyle = "#ffdd00";
+        ctx.fillRect(x + 4, y, 4, 3);
+        ctx.fillRect(x + carWidth - 8, y, 4, 3);
+
+        ctx.fillStyle = "#ff1111";
+        ctx.fillRect(x + 3, y + carHeight - 3, 6, 3);
+        ctx.fillRect(x + carWidth - 9, y + carHeight - 3, 6, 3);
+    }
+
+    if (isPlayer) {
+        ctx.fillStyle = "#111111";
+        ctx.fillRect(x - 2, y + carHeight - 4, carWidth + 4, 4);
+        ctx.fillStyle = "#ff3333";
+        ctx.fillRect(x - 2, y + carHeight - 6, 3, 3);
+        ctx.fillRect(x + carWidth - 1, y + carHeight - 6, 3, 3);
+    }
+
+    ctx.restore();
+}
+
+function animateRace() {
+    if (!isRacePlaying) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Трасса
+    ctx.fillStyle = "#161616";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Обочины
+    ctx.fillStyle = "#ff3333";
+    ctx.fillRect(0, 0, 10, canvas.height);
+    ctx.fillRect(canvas.width - 10, 0, 10, canvas.height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(10, 0, 2, canvas.height);
+    ctx.fillRect(canvas.width - 12, 0, 2, canvas.height);
+
+    // Разметка
+    ctx.strokeStyle = "#3A3A3A";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([30, 30]);
+    ctx.lineDashOffset = -spawnTimer * (baseObstacleSpeed * 1.3);
+
+    for (let i = 73; i < canvas.width - 20; i += 73) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    if (keys.Left) player.x -= player.speed;
+    if (keys.Right) player.x += player.speed;
+    keepCarInBounds();
+
+    drawStylizedCar(player.x, player.y, "#ffffff", true);
+
+    spawnTimer++;
+    if (spawnTimer % spawnFrequency === 0) {
+        spawnObstacle();
+    }
+
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+        let obs = obstacles[i];
+        obs.y += obs.speed;
+
+        drawStylizedCar(obs.x, obs.y, obs.color, false);
+
+        if (
+            player.x + 2 < obs.x + obs.width - 2 &&
+            player.x + carWidth - 2 > obs.x + 2 &&
+            player.y + 2 < obs.y + obs.height - 2 &&
+            player.y + carHeight - 2 > obs.y + 2
+        ) {
+            endRaceGame(false);
+            return;
+        }
+
+        if (obs.y > canvas.height) {
+            obstacles.splice(i, 1);
+            score++;
+
+            // --- ПЛАВНОЕ УСЛОЖНЕНИЕ ДЛЯ ДОЛГОЙ ИГРЫ ---
+            if (score <= 25) {
+                baseObstacleSpeed += 0.16; // Прирост скорости стал в 2 раза медленнее
+                if (score % 2 === 0) {
+                    spawnFrequency = Math.max(24, spawnFrequency - 1); // Частота спавна растет аккуратно
+                }
+            }
+
+            if (score >= 30) { // Новое условие победы
+                endRaceGame(true);
+                return;
+            }
+        }
+    }
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 18px sans-serif";
+    ctx.fillText("PUNKTY: " + score + " / 30", 22, 32);
+
+    gameAnimationId = requestAnimationFrame(animateRace);
+}
+
+function endRaceGame(isWin) {
+    isRacePlaying = false;
+    cancelAnimationFrame(gameAnimationId);
+
+    const resultDiv = document.getElementById('race-result');
+    const msgContainer = document.getElementById('race-msg');
+    const introDiv = document.getElementById('race-intro');
+
+    resultDiv.classList.remove('d-none');
+    introDiv.classList.remove('d-none');
+    document.getElementById('start-race-btn').innerText = "ZAGRAJ PONOWNIE 🔄";
+
+    if (isWin) {
+        msgContainer.style.backgroundColor = 'rgba(255, 51, 51, 0.15)';
+        msgContainer.style.border = '2px solid #ff3333';
+        msgContainer.innerHTML = `
+            <h3 class="text-danger fw-black text-uppercase mb-3" style="font-size: 1.6rem; letter-spacing: 1px;">MISTRZ KIEROWNICY! 🏆</h3>
+            <p class="text-white fw-bold mb-3" style="font-size: 1.1rem;">Niesamowity wytrwałość! Pokonałeś cały dystans. Twój kod rabatowy 5%:</p>
+            <div class="bg-black p-3 rounded fw-black fs-3 border border-danger text-white mb-2" style="letter-spacing: 3px; color: #ff3333 !important;">CARVERIS_PRO_RIDER</div>
+            <small class="text-white-50 fw-bold d-block mt-2" style="font-size: 0.85rem;">Pokaż ten kod przy rezerwacji terminu w naszym studio!</small>
+        `;
+    } else {
+        msgContainer.style.backgroundColor = 'rgba(255,255,255,0.05)';
+        msgContainer.style.border = '2px solid #444';
+        msgContainer.innerHTML = `
+            <h3 class="text-white fw-black text-uppercase mb-2" style="font-size: 1.5rem;">KRAKSA! 💥</h3>
+            <p class="text-white-50 fw-bold mb-0" style="font-size: 1.1rem;">Zabrakło niewiele! Twój wynik to: <span class="text-danger fw-black fs-4">${score} / 30</span>.<br>Spróbuj ponownie, jesteś coraz bliżej zniżki!</p>
+        `;
+    }
+}
+</script>
+    <!-- ПОДВАЛ -->
+    <footer class="text-center py-4 text-muted" style="background-color: #050505;">
+        <p>&copy; 2026 CARVERIS DETAILING. Wszystkie prawa zastrzeżone.</p>
+    </footer>
+<div id="booking-modal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="custom-close-btn" onclick="closeBooking()">&times;</span>
+
+        <h2 class="text-uppercase mb-2" style="color:white;">Szybka Rezerwacja 🚗</h2>
+        <p class="mb-4" style="color: #cccccc; font-size: 1rem; font-weight: 400;">
+    Zostaw dane, a nasz bot natychmiast powiadomi managera.</p>
+        <hr style="border-color: white;"><br>
+
+        <form action="/join" method="POST" class="text-start">
+            <div class="mb-3">
+                <label class="form-label">Imię</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Telefon</label>
+                <input type="tel" name="phone" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Auto</label>
+                <input type="text" name="car" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Interesująca usługa</label>
+                <select name="service" id="modal-service-select" class="form-select">
+                    <option value="Korekta lakieru">Korekta lakieru</option>
+                    <option value="Powłoka ceramiczna">Powłoka ceramiczna</option>
+                    <option value="Detailing wnętrza">Detailing wnętrza</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger w-100 py-2 mt-3 text-uppercase fw-bold">Wyślij do bota 🤖</button>
+        </form>
+    </div>
+</div>
+
+</body>
+<script>
+// Открыть окно записи. Если передать название услуги, она выберется автоматически!
+function openBooking(defaultService = '') {
+    document.getElementById("booking-modal").style.display = "block";
+
+    if (defaultService) {
+        let selectBox = document.getElementById("modal-service-select");
+        if (selectBox) {
+            selectBox.value = defaultService;
+        }
+    }
+}
+
+// Закрыть окно записи
+function closeBooking() {
+    document.getElementById("booking-modal").style.display = "none";
+}
+
+// Закрытие окна, если клиент кликнул на темную область вокруг окна
+window.onclick = function(event) {
+    let modal = document.getElementById("booking-modal");
+    if (event.target == modal) {
+        closeBooking();
+    }
+}
+</script>
+</html>
